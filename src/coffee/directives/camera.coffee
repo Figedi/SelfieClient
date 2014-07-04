@@ -35,7 +35,6 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       cameraData.videoStream = stream
       cameraData.videoBlob = URL.createObjectURL stream
       scope.videoStream = URL.createObjectURL stream
-      scope.imageAvailable = true
       scope.$apply()
       cameraData.videoRequested = false
 
@@ -123,6 +122,8 @@ exports.usermedia = ['Config', 'cameraData', (Config, cameraData) ->
           cameraData.videoStream = null
         #remove scope reference, thus toggling the ngSHow/hide
         scope.videoStream = null
+        scope.imageAvailable = true
+
         scope.$apply()
         cameraData.videoRequested = false
   }

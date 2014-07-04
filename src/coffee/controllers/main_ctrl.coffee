@@ -21,6 +21,8 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
       console.log "no b64 image"
 
   $scope.onDestroyClick = ->
-    alert('Löschen nicht erfolgreich, bitte Raum 302 aufsuchen!')
+    $scope.imageSrc = Config.imageSrc
+    $scope.imageAvailable = false
+    #alert('Löschen nicht erfolgreich, bitte Raum 302 aufsuchen!')
 ]
 
