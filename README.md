@@ -1,14 +1,14 @@
 Selfie App for CMK-Project 2014
 =====
 
-Selfie app for a Project at University of Lübeck. Basically its a small phonegap-App which can take selfie pictures and then uploads them to a server, pretty standard stuff. :-)
+Selfie app for a Project at University of Lübeck. Basically it's a small Cordova-App which can take selfie pictures and then uploads them to a server, pretty standard stuff. :-)
 
 
 Installation
 -----
 
 For Installation, you need the following:
-  * Phonegap ~> 3.4.0
+  * Cordova ~> 3.5.0
   * Working ADT/iOS environment
   * node ~> 0.10 + npm
   * compass gem (`gem install compass`)
@@ -24,6 +24,7 @@ This project utilizes a gulp workflow, for starters in devmode, use `gulp` from 
 
 Building
 -----
+
 Currently two plattforms are installed: Android and iOS. For other platforms, follow the plattform guide of phonegap.
 All src/ files are copied to www during the `gulp build` task, so a phonegap build always gets the latest source files. For plattform building/debugging on devices, you can either use:
   * Phonegap Development App with live-refresh (i.e. `phonegap serve`)

@@ -7,6 +7,7 @@ controllers = require('./controllers/main_ctrl.coffee')
 
 app = angular.module 'selfieApp', ['onsen.directives']
 app.config [ '$sceDelegateProvider', ($sceDelegateProvider) ->
+  # add blob urls (for getUsermedia) to whitelist
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
     /^\s*(blob|https?):|data:image\//

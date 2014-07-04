@@ -7,6 +7,8 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
 
   $scope.imageSrc = Config.imageSrc
   $scope.videoStream = ''
+  $scope.imageAvailable = false
+
   $scope.onUploadClick = ->
     console.log "scope.imageSrc", $scope.imageSrc
     if testForB64()

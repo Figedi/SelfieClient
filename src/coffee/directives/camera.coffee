@@ -35,6 +35,7 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       cameraData.videoStream = stream
       cameraData.videoBlob = URL.createObjectURL stream
       scope.videoStream = URL.createObjectURL stream
+      scope.imageAvailable = true
       scope.$apply()
       cameraData.videoRequested = false
 
@@ -51,12 +52,14 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       else
         console.log "no phonegap or usermedia available", Config.imageSrc
         scope.imageSrc = Config.imageSrc
+        scope.imageAvailable = false
         scope.$apply()
 
 
   #if phonegap retrieved image successfully, replace it for preview in img container
   onPhonegapSucc = (scope) ->
     (data) ->
+      scope.imageAvailable = true
       scope.imageSrc = data
       scope.$apply()
 
@@ -64,6 +67,7 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
   onPhonegapErr = (err) ->
     console.log "err phonegap", err
     scope.imageSrc = Config.imageSrc
+    scope.imageAvailable = false
     scope.$apply()
 
   ##############################   Actual Directive   ############################

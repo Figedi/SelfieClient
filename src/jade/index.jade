@@ -25,13 +25,13 @@ head
           p
           ons-row
             ons-col(align='center')
-              ons-button(type='large' ng-click='onUploadClick()')
+              ons-button(type='large' ng-click='onUploadClick()', disabled='{{!imageAvailable}}')
                 ons-icon(icon='cloud-upload')
                 span.button_addon Selfie hochladen
           p
           ons-row
             ons-col(align='center')
-              ons-button(type='large', ng-click='onDestroyClick()')
+              ons-button(type='large', ng-click='onDestroyClick()', disabled='{{!imageAvailable}}')
                 ons-icon(icon='times')
                 span.button_addon Selfie löschen
 
