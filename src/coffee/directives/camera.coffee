@@ -12,7 +12,7 @@ require('../factories/camera_data')
  *
  * @return {void}                 No explicit returnvalue needed
 ###
-exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config, cameraData) ->
+exports.camera = ['cordovaReady', 'Config', 'cameraData', '$timeout', (cordovaReady, Config, cameraData, $timeout) ->
 
   ##############################   Helper methods   ##############################
   navigator.getUserMedia = (navigator.getUserMedia ||
@@ -68,10 +68,12 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
   #if phonegap retrieved image successfully, replace it for preview in img container
   onPhonegapSucc = (scope) ->
     (data) ->
+      console.log "success phonegap"
       scope.imageAvailable = true
       scope.imageSrc = data
       scope.$apply()
-
+      #cleanup cache
+      cordovaReady.ready().then -> navigator.camera.cleanup((->), (->))
   #if phonegap failed again, fallback to default image (or again broken icon)
   onPhonegapErr = (err) ->
     #todo: again: error with toast
@@ -85,13 +87,13 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
     restrict: 'A'
     link: (scope, element, attrs) ->
       element.on 'click', ->
+        console.log "click :)", cameraData.videoRequested, scope.uploadRequested
         return if cameraData.videoRequested
         return if scope.uploadRequested
-        cameraData.videoRequested = true
         scope.imageAvailable = false #deactivate buttons after subsequent calls
-
         #todo: größere standardgröße wählen
         if navigator.getUserMedia
+          cameraData.videoRequested = true
           getImageFromUserMedia(element, scope)
         else
           getImageFromPhonegap(scope)

@@ -6,8 +6,8 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
   testForB64 = -> Config.base64Regex.test $scope.imageSrc
   lastScale = 1
   $scope.imageSrc = Config.imageSrc
-  $scope.videoStream = ''
-  $scope.imageAvailable = false
+  $scope.videoStream = '' #userMedia
+  $scope.imageAvailable = false #userMedia
   $scope.uploadRequested = false
 
   $scope.onUploadClick = ->
