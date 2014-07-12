@@ -35,5 +35,3 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
     $scope.imageSrc = Config.imageSrc
     $scope.imageAvailable = false
 
-]
-

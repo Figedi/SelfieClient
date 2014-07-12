@@ -137,6 +137,8 @@ exports.usermedia = ['Config', 'cameraData', (Config, cameraData) ->
         scope.imageAvailable = true
         #remove scope reference, thus toggling the ngSHow/hide
         scope.videoStream = null
+        scope.imageAvailable = true
+
         scope.$apply()
         cameraData.videoRequested = false
   }
