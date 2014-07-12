@@ -4,34 +4,32 @@ head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
     title Selfie App
-    link(rel='stylesheet', href='vendor/onsen/css/onsenui.css')
-    link(rel='stylesheet', href='vendor/onsen/css/topcoat-mobile-onsen-ios7.css')
     link(rel='stylesheet', href='css/app.css')
+    link(rel='stylesheet', href='vendor/onsen/css/onsenui.css')
     script(src='cordova.js')
     script(src='cordova_plugins.js')
     script(src='vendor/angular/angular.js')
     script(src='vendor/angular-touch/angular-touch.js')
-    script(src='vendor/angular-animate/angular-animate.js')
-    script(src='vendor/onsen/js/onsenui.js')
     script(src='js/app.min.js')
-  body(ng-app='selfieApp')
-    ons-screen
-      ons-navigator(title='Selfie')
-        section(style="padding: 8px;", ng-controller="MainCtrl")
-          ons-row
-            ons-col(align='center')
-              img.selfie_img(ng-src='{{imageSrc}}', ng-hide='videoStream', camera)
-              video(ng-src='{{videoStream}}', ng-show='videoStream', width='320', height='279', usermedia, autoplay)
-          p
-          ons-row
-            ons-col(align='center')
-              ons-button(type='large' ng-click='onUploadClick()', disabled='{{!imageAvailable}}')
-                ons-icon(icon='cloud-upload')
-                span.button_addon Selfie hochladen
-          p
-          ons-row
-            ons-col(align='center')
-              ons-button(type='large', ng-click='onDestroyClick()', disabled='{{!imageAvailable}}')
-                ons-icon(icon='times')
-                span.button_addon Selfie löschen
+  body(ng-app='selfieApp' ng-controller="MainCtrl")
+
+    .center
+      .image_wrapper
+        img.selfie_img(ng-tap="" ng-src='{{imageSrc}}', ng-hide='videoStream', camera)
+        .description(ng-hide="uploadRequested")
+          p Tippen, um neues Selfie aufzunehmen
+      video(ng-src='{{videoStream}}', ng-show='videoStream', width='320', height='279', usermedia, autoplay)
+    .center
+      button(ng-click="onDestroyClick()", ng-class="{ disabled: !imageAvailable || uploadRequested }")
+        i.fa.fa-times
+        span.button_addon Selfie löschen
+      button(ng-click="onUploadClick()", ng-class="{ disabled: !imageAvailable }", ng-hide="uploadRequested")
+        i.fa.fa-cloud-upload
+        span.button_addon Selfie Hochladen
+      button(ng-show="uploadRequested")
+        i.fa.fa-spinner.fa-spin
+        span.button_addon Hochladen...
+
+
+
 

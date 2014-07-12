@@ -5,7 +5,7 @@ cameraFactory = require('./factories/camera_data.coffee')
 directives = require('./directives/camera.coffee')
 controllers = require('./controllers/main_ctrl.coffee')
 
-app = angular.module 'selfieApp', ['onsen.directives']
+app = angular.module 'selfieApp', ['ngTouch']
 app.config [ '$sceDelegateProvider', ($sceDelegateProvider) ->
   # add blob urls (for getUsermedia) to whitelist
   $sceDelegateProvider.resourceUrlWhitelist([

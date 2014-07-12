@@ -29,13 +29,20 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
         "maxHeight": h
     audio: false
 
+  getImageFromUserMedia = (element, scope) ->
+    [ew,eh] = [element[0].width, element[0].height]
+    video = document.querySelector('video')
+    video.setAttribute('width', ew)
+    video.setAttribute('height', eh)
+    navigator.getUserMedia mediaOpts(ew,eh), onUsermediaSucc(scope), onUsermediaErr(scope)
+
   # first try to get usermedia picture
   onUsermediaSucc = (scope) ->
     (stream) ->
+      console.log "success"
       cameraData.videoStream = stream
       cameraData.videoBlob = URL.createObjectURL stream
       scope.videoStream = URL.createObjectURL stream
-      scope.imageAvailable = true
       scope.$apply()
       cameraData.videoRequested = false
 
@@ -47,14 +54,16 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       console.log "err usermedia", err
       cameraData.videoRequested = false
       if navigator.camera
-        cordovaReady.ready().then ->
-          navigator.camera.getPicture onPhonegapSucc(scope), onPhonegapErr, Config.phonegap.defaultOptions
-      else
-        console.log "no phonegap or usermedia available", Config.imageSrc
+        getImageFromPhonegap(scope)
+      else #todo: toast instead of log
+        console.log "No phonegap or usermedia available"
         scope.imageSrc = Config.imageSrc
         scope.imageAvailable = false
         scope.$apply()
 
+  getImageFromPhonegap = (scope) ->
+    cordovaReady.ready().then ->
+          navigator.camera.getPicture onPhonegapSucc(scope), onPhonegapErr, Config.phonegap.defaultOptions
 
   #if phonegap retrieved image successfully, replace it for preview in img container
   onPhonegapSucc = (scope) ->
@@ -65,6 +74,7 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
 
   #if phonegap failed again, fallback to default image (or again broken icon)
   onPhonegapErr = (err) ->
+    #todo: again: error with toast
     console.log "err phonegap", err
     scope.imageSrc = Config.imageSrc
     scope.imageAvailable = false
@@ -76,13 +86,16 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
     link: (scope, element, attrs) ->
       element.on 'click', ->
         return if cameraData.videoRequested
+        return if scope.uploadRequested
         cameraData.videoRequested = true
+        scope.imageAvailable = false #deactivate buttons after subsequent calls
+
         #todo: größere standardgröße wählen
-        [ew,eh] = [element[0].width, element[0].height]
-        video = document.querySelector('video')
-        video.setAttribute('width', ew)
-        video.setAttribute('height', eh)
-        navigator.getUserMedia mediaOpts(ew,eh), onUsermediaSucc(scope), onUsermediaErr(scope)
+        if navigator.getUserMedia
+          getImageFromUserMedia(element, scope)
+        else
+          getImageFromPhonegap(scope)
+
     }
   ]
 
@@ -121,6 +134,7 @@ exports.usermedia = ['Config', 'cameraData', (Config, cameraData) ->
         if cameraData.videoStream
           cameraData.videoStream.stop()
           cameraData.videoStream = null
+        scope.imageAvailable = true
         #remove scope reference, thus toggling the ngSHow/hide
         scope.videoStream = null
         scope.$apply()
