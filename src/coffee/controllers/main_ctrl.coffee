@@ -34,4 +34,4 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
   $scope.onDestroyClick = ->
     $scope.imageSrc = Config.imageSrc
     $scope.imageAvailable = false
-
+]
