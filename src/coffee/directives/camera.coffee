@@ -12,7 +12,7 @@ require('../factories/camera_data')
  *
  * @return {void}                 No explicit returnvalue needed
 ###
-exports.camera = ['cordovaReady', 'Config', 'cameraData', '$timeout', (cordovaReady, Config, cameraData, $timeout) ->
+exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config, cameraData) ->
 
   ##############################   Helper methods   ##############################
   navigator.getUserMedia = (navigator.getUserMedia ||
@@ -87,7 +87,6 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', '$timeout', (cordovaRe
     restrict: 'A'
     link: (scope, element, attrs) ->
       element.on 'click', ->
-        console.log "click :)", cameraData.videoRequested, scope.uploadRequested
         return if cameraData.videoRequested
         return if scope.uploadRequested
         scope.imageAvailable = false #deactivate buttons after subsequent calls
