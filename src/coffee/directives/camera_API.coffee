@@ -2,6 +2,7 @@
 require('../config/static')
 require('../factories/cordova_ready')
 require('../factories/camera_data')
+require('../factories/overlay')
 ###*
  * Directive for the image-Object. Initializes either a videostream and switches to
  * the usermedia module or uses the phonegap camera data-stream for image replacement
@@ -12,7 +13,7 @@ require('../factories/camera_data')
  *
  * @return {void}                 No explicit returnvalue needed
 ###
-exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config, cameraData) ->
+camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Config, cameraData, overlay) ->
 
   ##############################   Helper methods   ##############################
   navigator.getUserMedia = (navigator.getUserMedia ||
@@ -55,8 +56,8 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       cameraData.videoRequested = false
       if navigator.camera
         getImageFromPhonegap(scope)
-      else #todo: toast instead of log
-        console.log "No phonegap or usermedia available"
+      else
+        overlay.show({type: 'error', text: 'Keine Kamera verfügbar'})
         scope.imageSrc = Config.imageSrc
         scope.imageAvailable = false
         scope.$apply()
@@ -76,8 +77,7 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
       cordovaReady.ready().then -> navigator.camera.cleanup((->), (->))
   #if phonegap failed again, fallback to default image (or again broken icon)
   onPhonegapErr = (err) ->
-    #todo: again: error with toast
-    console.log "err phonegap", err
+    toast.show({type: 'error', text: 'Kamerafehler :('})
     scope.imageSrc = Config.imageSrc
     scope.imageAvailable = false
     scope.$apply()
@@ -99,48 +99,4 @@ exports.camera = ['cordovaReady', 'Config', 'cameraData', (cordovaReady, Config,
 
     }
   ]
-
-###*
- * @todo use larger video/snapshot size
- * Directive for the video-Object. Once a videostream is established, clicking/tapping on the video-tag
- * results in a screenshot and image-replacement of the imgtag. Once this is done, it switches back to the
- * camera directive
- *
- * @param {Object} Config     Application Config Object
- * @param {Object} cameraData Shared Data between both directives
- *
- * @return {void}             No explicit returnvalue needed
-###
-exports.usermedia = ['Config', 'cameraData', (Config, cameraData) ->
-
-  ##############################   Helper methods   ##############################
-  canvas = document.createElement('canvas')
-  context = canvas.getContext('2d')
-
-  createSnapshot = (element) ->
-    [ew,eh] = [element.width, element.height]
-    canvas.width = ew
-    canvas.height = eh
-    context.drawImage(element, 0, 0, ew, eh)
-    canvas.toDataURL('image/png')
-
-  ##############################   Actual Directive   ############################
-  {
-    restrict: 'A'
-    link: (scope, element, attrs) ->
-      element.on 'click', ->
-        scope.imageSrc = createSnapshot(element[0])
-        element[0].pause()
-        #stop the streaming from camera
-        if cameraData.videoStream
-          cameraData.videoStream.stop()
-          cameraData.videoStream = null
-        scope.imageAvailable = true
-        #remove scope reference, thus toggling the ngSHow/hide
-        scope.videoStream = null
-        scope.imageAvailable = true
-
-        scope.$apply()
-        cameraData.videoRequested = false
-  }
-  ]
+module.exports = camera

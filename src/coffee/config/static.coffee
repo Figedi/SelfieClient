@@ -30,4 +30,4 @@ data.phonegap.defaultOptions =
   encodingType: data.phonegap.CameraDefaults.EncodingType.JPEG
   cameraDirection: data.phonegap.CameraDefaults.Direction.FRONT
 
-exports.config = data
+module.exports = data

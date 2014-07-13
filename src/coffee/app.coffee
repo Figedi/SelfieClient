@@ -1,9 +1,15 @@
 'use strict'
+#constants
 config = require('./config/static.coffee')
-factories = require('./factories/cordova_ready.coffee')
-cameraFactory = require('./factories/camera_data.coffee')
-directives = require('./directives/camera.coffee')
-controllers = require('./controllers/main_ctrl.coffee')
+#factories
+cordovaReady = require('./factories/cordova_ready.coffee')
+cameraData = require('./factories/camera_data.coffee')
+overlay = require('./factories/overlay.coffee')
+#directives
+camera = require('./directives/camera_API.coffee')
+canvas = require('./directives/canvas_screenshot.coffee')
+#controllers
+MainCtrl = require('./controllers/main_ctrl.coffee')
 
 app = angular.module 'selfieApp', ['ngTouch']
 app.config [ '$sceDelegateProvider', ($sceDelegateProvider) ->
@@ -13,12 +19,13 @@ app.config [ '$sceDelegateProvider', ($sceDelegateProvider) ->
     /^\s*(blob|https?):|data:image\//
   ])
 ]
-app.constant 'Config', config.config
-app.factory 'cordovaReady', factories.cordovaReady
-app.factory 'cameraData', cameraFactory.cameraData
-app.directive 'camera', directives.camera
-app.directive 'usermedia', directives.usermedia
-app.controller 'MainCtrl', controllers.MainCtrl
+app.constant 'Config', config
+app.factory 'cordovaReady', cordovaReady
+app.factory 'cameraData', cameraData
+app.factory 'overlay', overlay
+app.directive 'camera', camera
+app.directive 'usermedia', canvas
+app.controller 'MainCtrl', MainCtrl
 
 
 

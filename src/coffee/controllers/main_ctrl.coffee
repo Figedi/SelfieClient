@@ -1,7 +1,8 @@
 'use strict'
 require('../config/static')
 
-exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
+MainCtrl = ['$scope', '$http', 'Config', 'overlay', ($scope, $http, Config, overlay) ->
+
 
   testForB64 = -> Config.base64Regex.test $scope.imageSrc
   lastScale = 1
@@ -9,6 +10,8 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
   $scope.videoStream = '' #userMedia
   $scope.imageAvailable = false #userMedia
   $scope.uploadRequested = false
+
+  $scope.onTestClick = -> overlay.show({text: "logic"})
 
   $scope.onUploadClick = ->
     console.log "scope.imageSrc", $scope.imageSrc
@@ -35,3 +38,4 @@ exports.MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
     $scope.imageSrc = Config.imageSrc
     $scope.imageAvailable = false
 ]
+module.exports = MainCtrl
