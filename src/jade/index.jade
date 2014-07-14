@@ -4,19 +4,20 @@ head
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no')
     title Selfie App
-    link(rel='stylesheet', href='vendor/onsen/css/onsenui.css')
+    link(rel='stylesheet', href='vendor/css/vendor.min.css')
     link(rel='stylesheet', href='css/app.css')
     script(src='cordova.js')
     script(src='cordova_plugins.js')
-    script(src='vendor/angular/angular.js')
-    script(src='vendor/angular-touch/angular-touch.js')
+    script(src='vendor/js/vendor.min.js')
     script(src='js/app.min.js')
   body(ng-app='selfieApp' ng-controller="MainCtrl")
     .center
       .image_wrapper(ng-hide='videoStream')
-        img.selfie_img(ng-tap="" ng-src='{{imageSrc}}', camera)
-        .description(ng-hide="uploadRequested")
-          p Tippen, um neues Selfie aufzunehmen
+        span.selfie_img(picture-fill, camera, data-alt="Foobar")
+          span(pf-src="img/selfie_landscape.svg", data-media="(min-width: 645px)")
+          span(pf-src="img/selfie_portrait.svg", data-media="(max-width: 644px)")
+          .description(ng-hide="uploadRequested")
+            p Tippen, um neues Selfie aufzunehmen
       video(ng-src='{{videoStream}}', ng-show='videoStream', width='320', height='279', usermedia, autoplay)
     .center
       button(ng-click="onDestroyClick()", ng-class="{ disabled: !imageAvailable || uploadRequested }")
@@ -28,9 +29,4 @@ head
       button(ng-show="uploadRequested")
         i.fa.fa-spinner.fa-spin
         span.button_addon Hochladen...
-      button(ng-click="onTestClick()")
-        i.fa.fa-spinner.fa-spin
-        span.button_addon Test
-
-
 

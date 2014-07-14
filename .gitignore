@@ -1,6 +1,5 @@
 node_modules
 src/vendor/*
-!src/vendor/onsen
 www/vendor
 .sass-cache
 # just in case, ignore platform specific files

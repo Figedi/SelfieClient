@@ -11,7 +11,7 @@ canvas = require('./directives/canvas_screenshot.coffee')
 #controllers
 MainCtrl = require('./controllers/main_ctrl.coffee')
 
-app = angular.module 'selfieApp', ['ngTouch']
+app = angular.module 'selfieApp', ['ngTouch', 'ng.picturefill']
 app.config [ '$sceDelegateProvider', ($sceDelegateProvider) ->
   # add blob urls (for getUsermedia) to whitelist
   $sceDelegateProvider.resourceUrlWhitelist([

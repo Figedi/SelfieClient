@@ -1,2 +1,2 @@
 var gulp = require('gulp');
-gulp.task('build', [ 'coffee', 'compass', 'images', 'jade', 'copy-dep' ]);
+gulp.task('build', [ 'coffee', 'sass', 'images', 'jade', 'copy-dep' ]);

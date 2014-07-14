@@ -1,7 +1,7 @@
 'use strict'
 require('../config/static')
 
-MainCtrl = ['$scope', '$http', 'Config', 'overlay', ($scope, $http, Config, overlay) ->
+MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
 
 
   testForB64 = -> Config.base64Regex.test $scope.imageSrc
@@ -11,7 +11,6 @@ MainCtrl = ['$scope', '$http', 'Config', 'overlay', ($scope, $http, Config, over
   $scope.imageAvailable = false #userMedia
   $scope.uploadRequested = false
 
-  $scope.onTestClick = -> overlay.show({text: "logic"})
 
   $scope.onUploadClick = ->
     console.log "scope.imageSrc", $scope.imageSrc
