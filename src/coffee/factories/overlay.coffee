@@ -32,7 +32,7 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
     iconClass = if opts.type == 'success' then STATICS.SUCCESS_CLASS else STATICS.ERROR_CLASS
     html = """
       <div class="toast #{opts.type}">
-        <i class="#{iconClass}">
+        <i class="#{iconClass}"></i>
         <span>#{opts.text}</span>
       </div>
     """
@@ -45,6 +45,8 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
 
   {
     show: (opts) ->
+      #shortcut for success messages
+      opts = { text: opts } if typeof opts == 'string'
       opts = angular.extend defaultOpts, opts
       showToast(opts)
   }

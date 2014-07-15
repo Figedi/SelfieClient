@@ -64,14 +64,14 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
 
   getImageFromPhonegap = (scope) ->
     cordovaReady.ready().then ->
-          navigator.camera.getPicture onPhonegapSucc(scope), onPhonegapErr, Config.phonegap.defaultOptions
+      navigator.camera.getPicture onPhonegapSucc(scope), onPhonegapErr, Config.phonegap.defaultOptions
 
   #if phonegap retrieved image successfully, replace it for preview in img container
   onPhonegapSucc = (scope) ->
     (data) ->
       console.log "success phonegap"
       scope.imageAvailable = true
-      scope.imageSrc = data
+      scope.imageSrc = "data:image/png;base64,#{data}"
       scope.$apply()
       #cleanup cache
       cordovaReady.ready().then -> navigator.camera.cleanup((->), (->))
@@ -93,7 +93,8 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
         #todo: größere standardgröße wählen
         if navigator.getUserMedia
           cameraData.videoRequested = true
-          getImageFromUserMedia(element, scope)
+          #find the visible image (automatically visible by usermedia)
+          getImageFromUserMedia(element.find('img'), scope)
         else
           getImageFromPhonegap(scope)
 

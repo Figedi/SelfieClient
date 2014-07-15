@@ -25,7 +25,7 @@ data =
 
 data.phonegap.defaultOptions =
   quality: 50
-  destinationType: data.phonegap.CameraDefaults.DestinationType.FILE_URL
+  destinationType: data.phonegap.CameraDefaults.DestinationType.DATA_URL
   sourceType: data.phonegap.CameraDefaults.PictureSourceType.CAMERA
   encodingType: data.phonegap.CameraDefaults.EncodingType.JPEG
   cameraDirection: data.phonegap.CameraDefaults.Direction.FRONT

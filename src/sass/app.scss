@@ -2,12 +2,7 @@
 
 * {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -31,12 +26,11 @@ body {
   top: 50%;
   left: 50%;
   width: 200px;
-  height: 200px;
+  height: auto;
+  padding-bottom: 20px;
   margin-left: -100px;
   margin-top: -100px;
   background: rgba(0, 0, 0, 0.8);
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
   border-radius: 20px;
   i {
     color: white;
@@ -50,7 +44,6 @@ body {
     text-align: center;
     display: block;
     font-size: 22px;
-    position: absolute;
     bottom: 20px;
     left: 0;
     width: 100%;

@@ -1,7 +1,8 @@
 'use strict'
 require('../config/static')
+require('../factories/overlay')
 
-MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
+MainCtrl = ['$scope', '$http', 'Config', 'overlay', ($scope, $http, Config, overlay) ->
 
 
   testForB64 = -> Config.base64Regex.test $scope.imageSrc
@@ -13,9 +14,8 @@ MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
 
 
   $scope.onUploadClick = ->
-    console.log "scope.imageSrc", $scope.imageSrc
     return if $scope.uploadRequested
-    if testForB64()
+    if (testForB64())
       $scope.uploadRequested = true
       httpConfig =
         method: 'POST'
@@ -25,13 +25,13 @@ MainCtrl = ['$scope', '$http', 'Config', ($scope, $http, Config) ->
 
       $http(httpConfig)
       .success (data, status, headers, config) ->
-        console.log "it works"
+        overlay.show('Upload erfolgreich!')
         $scope.uploadRequested = false
       .error (data, status, headers, config) ->
         $scope.uploadRequested = false
-        console.log "it doesnt work"
+        overlay.show({text: 'Upload fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
     else
-      console.log "no b64 image"
+      overlay.show({text: 'Kein Selfie gefunden! :(', type: 'error'})
 
   $scope.onDestroyClick = ->
     $scope.imageSrc = Config.imageSrc
