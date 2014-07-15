@@ -57,7 +57,10 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
       if navigator.camera
         getImageFromPhonegap(scope)
       else
-        overlay.show({type: 'error', text: 'Keine Kamera verfügbar'})
+        if err.name == 'DevicesNotFoundError'
+          overlay.show({type: 'error', text: 'Keine Kamera verfügbar'})
+        else
+          overlay.show({type: 'error', text: 'Kamerafehler!'})
         scope.imageSrc = Config.imageSrc
         scope.imageAvailable = false
         scope.$apply()

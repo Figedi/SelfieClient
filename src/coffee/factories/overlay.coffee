@@ -31,7 +31,7 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
   showToast = (opts) ->
     iconClass = if opts.type == 'success' then STATICS.SUCCESS_CLASS else STATICS.ERROR_CLASS
     html = """
-      <div class="toast #{opts.type}">
+      <div class="toast">
         <i class="#{iconClass}"></i>
         <span>#{opts.text}</span>
       </div>
