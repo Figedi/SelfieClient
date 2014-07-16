@@ -156,4 +156,12 @@ video {
     }
   }
 }
-
+.ngdialog-button.disabled {
+  background-color: #428bca !important;
+  border-color: #357ebd !important;
+  color: white !important;
+  pointer-events: none;
+  cursor: not-allowed !important;
+  box-shadow: none;
+  opacity: .65;
+}
