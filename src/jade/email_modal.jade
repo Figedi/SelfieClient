@@ -9,7 +9,8 @@ ons-page
       br
       ons-button(modifier="large", type="submit", ng-class="{disabled: server.uploadRequested || dialogForm.$invalid }", ng-click="dialogForm.$valid && onEmailClick()")
         ons-icon(icon="cloud-upload")
-        | OK
+        span(ng-show="server.uploadRequested") Warte auf Upload-Ende
+        span(ng-hide="server.uploadRequested") Uploaden!
       br
       ons-button(modifier="large", ng-click="selfieNav.popPage()")
         ons-icon(icon="times")
