@@ -1,6 +1,5 @@
 data =
   serverIP: 'http://141.83.80.129'
-  imageSrc: 'img/selfie.png'
   base64Regex: /^(?:data\:[^,]+,)?(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/
   phonegap:
     CameraDefaults: #phonegap defaults

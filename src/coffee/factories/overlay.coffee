@@ -4,7 +4,7 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
     ERROR_CLASS: 'fa fa-times fa-5x'
 
   defaultOpts =
-    duration: 5000 #ms
+    duration: 3000 #ms
     type: 'success' #success or error
     text: 'Success!' #default text
     $scope: $rootScope.$new();
@@ -24,6 +24,9 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
       #note that this preserves the toast DOM node, but it is overwritten
       #upon next invokation anyways (see line 15)
       element.removeClass('toast-show').addClass('toast-hide')
+      $timeout ->
+        document.querySelector('.toast').remove()
+      , 750 #hack, we might as well just use ngAnimate
       timeoutPromise = null
     , duration
 

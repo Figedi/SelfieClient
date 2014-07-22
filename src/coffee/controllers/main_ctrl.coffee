@@ -1,78 +1,81 @@
 'use strict'
 require('../config/static')
 require('../factories/overlay')
+require('../factories/selfie_server')
 
-MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', '$interval', ($scope, $http, Config, overlay, ngDialog, $rootScope, $interval) ->
-
-
-  $interval ->
-    console.log "videoStream", $scope.videoAvailable, "imageAvailable", $scope.imageAvailable, $scope.videoAvailable || $scope.imageAvailable
-  , 1000
+MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, overlay) ->
 
   testForB64 = (image) ->
-    console.log "wat", $scope.imageSrc, Config.base64Regex.test(image)
+    console.log "image", image
     Config.base64Regex.test(image)
 
   uploadToServer = (opts) ->
-    httpConfig =
-      method: 'POST'
-      timeout: 30000 #30seconds
-      url: "#{Config.serverIP}/upload"
-      data: { b64: opts.image, email: opts.email }
-    $http(httpConfig)
+    $scope.server.uploadRequested = true
+    console.log "upload"
+    Server.upload(opts)
     .success (data, status, headers, config) ->
       overlay.show('Vielen Dank für dein Selfie!')
-      $scope.imageName = data.file.name
-      console.log "error while uploading"
+      $scope.server.fileName = data.file.name
+      $scope.server.uploadRequested = false
     .error (data, status, headers, config) ->
-      $scope.imageName = ''
+      overlay.show({text: 'Hochladen fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
       console.log "error while uploading"
+      $scope.server.fileName = ''
+      $scope.server.uploadRequested = false
 
   sendToEmail = (opts) ->
-    $scope.uploadRequested = true
-    httpConfig =
-      method: 'POST'
-      url: "#{Config.serverIP}/email"
-      data: { name: opts.name, email: opts.email }
-    $http(httpConfig)
+    $scope.server.uploadRequested = true
+    console.log "email"
+    Server.email(opts)
     .success (data, status, headers, config) ->
       overlay.show('Hochladen erfolgreich!')
       console.log "success", data
-      $scope.uploadRequested = false
+      $scope.server.uploadRequested = false
+      selfieNav.popPage()
+      $scope.test.imageSrc = null #reset image
+      $scope.userMedia.imageAvailable = false #reset to standard view (logo view)
     .error (data, status, headers, config) ->
-      $scope.imageName = ''
-      $scope.uploadRequested = false
+      $scope.server.fileName = ''
+      $scope.server.uploadRequested = false
       overlay.show({text: 'Hochladen fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
 
-
-  $scope.imageSrc = Config.imageSrc
+  $scope.test =
+    imageSrc: null #photo source, b64 encoded string, either from phonegap or usermedia
   $scope.userMedia =
-    videoAvailable: false
-    imageAvailable: false
-    videoBlob: null
-  $scope.uploadRequested = false
-  $scope.imageName = ''
-  $scope.dialogModel =
-    email: ''
+    videoAvailable: false #boolean to indicate whether videostream is ready
+    imageAvailable: false #boolean to indicat whether ???
+    videoBlob: null #blob reference for videostream from usermedia
+  $scope.server =
+    uploadRequested: false #boolean to lock upload
+    fileName: '' #returnvalue from server, is the actual saved image name for email
+    email: ''#email adress from input
 
-  $scope.$watch 'imageSrc', ->
-    return unless testForB64($scope.imageSrc)
-    uploadToServer({image: $scope.imageSrc, email: $scope.dialogModel.email})
+
+  $scope.$watch 'test.imageSrc', ->
+    return unless $scope.test.imageSrc
+    uploadToServer({image: $scope.test.imageSrc, email: $scope.server.email})
 
   $scope.onUploadClick = (ev) ->
-    return if $scope.uploadRequested || !testForB64($scope.imageSrc)
-    console.log "not b64"
-    dialogPromise = ngDialog.openConfirm
-      template: "html/email_modal.html"
-      scope: $scope
-    dialogPromise.then ->
-      sendToEmail({name: $scope.imageName, email: $scope.dialogModel.email})
-      $scope.dialogModel.email = ""
+    return if $scope.uploadRequested || !$scope.test.imageSrc
+    selfieNav.pushPage("html/email_modal.html", { animation : 'slide' })
+
+  $scope.onEmailClick = ->
+    console.log "it works"
+    #1. gucken ob gerade hochgeladne wird, wenn ja: button locken
+    #2. wenn nicht hochgeladen dann datei mitshcicken
+    if $scope.server.fileName
+      opts =
+        name: $scope.server.fileName
+        email: $scope.server.email
+    else
+      opts =
+        image: $scope.test.imageSrc
+        name: $scope.server.fileName
+        email: $scope.server.email
+    sendToEmail(opts)
 
   $scope.onDestroyClick = ->
-    $scope.imageSrc = Config.imageSrc
+    $scope.test.imageSrc = null
     $scope.userMedia.imageAvailable = false
-  $scope.testClick = ->
-    $scope.userMedia.imageAvailable = !$scope.userMedia.imageAvailable
 ]
 module.exports = MainCtrl

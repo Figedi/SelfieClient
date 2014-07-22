@@ -1,9 +1,16 @@
-.ngdialog-inner
-  form(name="dialogForm", novalidate)
-    input(type="email", ng-model="dialogModel.email", placeholder="Email-Adresse (optional)")
-    button(type="submit", class="ngdialog-button ngdialog-button-primary", ng-class="{disabled: dialogForm.$invalid }",ng-click="dialogForm.$valid && confirm()")
-      i.fa.fa-cloud-upload
-      | OK
-    button(class="ngdialog-button ngdialog-button-secondary", ng-click="closeThisDialog()")
-      i.fa.fa-times
-      | Abbrechen
+ons-page
+  ons-toolbar
+    .center Selfie hochladen
+  .page_wrapper
+    br
+    form(name="dialogForm", novalidate)
+      label Bitte Email angeben (optional)
+      input(type="email", ng-model="dialogModel.email", placeholder="Email-Adresse (optional)", ng-pattern="/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/")
+      br
+      ons-button(modifier="large", type="submit", ng-class="{disabled: server.uploadRequested || dialogForm.$invalid }", ng-click="dialogForm.$valid && onEmailClick()")
+        ons-icon(icon="cloud-upload")
+        | OK
+      br
+      ons-button(modifier="large", ng-click="selfieNav.popPage()")
+        ons-icon(icon="times")
+        | Abbrechen

@@ -30,16 +30,16 @@ usermedia = ['Config', 'cameraData', (Config, cameraData) ->
     restrict: 'A'
     link: (scope, element, attrs) ->
       element.on 'click', ->
-        scope.imageSrc = createSnapshot(element[0])
         element[0].pause()
         #stop the streaming from camera
         if cameraData.videoStream
           cameraData.videoStream.stop()
           cameraData.videoStream = null
-        scope.imageAvailable = true
+        scope.test.imageSrc = createSnapshot(element[0])
+        scope.userMedia.imageAvailable = true
         #remove scope reference, thus toggling the ngSHow/hide
-        scope.videoBlob = null
-        scope.videoAvailable = false
+        scope.userMedia.videoBlob = null
+        scope.userMedia.videoAvailable = false
 
         scope.$apply()
         cameraData.videoRequested = false

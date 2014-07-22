@@ -61,7 +61,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
           overlay.show({type: 'error', text: 'Keine Kamera verfügbar'})
         else
           overlay.show({type: 'error', text: 'Kamerafehler!'})
-        scope.imageSrc = Config.imageSrc
+        scope.imageSrc = null
         scope.userMedia.imageAvailable = false
         scope.$apply()
 
@@ -81,7 +81,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
   #if phonegap failed again, fallback to default image (or again broken icon)
   onPhonegapErr = (err) ->
     toast.show({type: 'error', text: 'Kamerafehler :('})
-    scope.imageSrc = Config.imageSrc
+    scope.imageSrc = null
     scope.userMedia.imageAvailable = false
     scope.$apply()
 
@@ -91,7 +91,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
     link: (scope, element, attrs) ->
       element.on 'click', ->
         return if cameraData.videoRequested
-        return if scope.uploadRequested
+        return if scope.server.uploadRequested
         scope.userMedia.imageAvailable = false #deactivate buttons after subsequent calls
         #todo: größere standardgröße wählen
         if navigator.getUserMedia
