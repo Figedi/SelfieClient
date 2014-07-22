@@ -2,10 +2,16 @@
 require('../config/static')
 require('../factories/overlay')
 
-MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', ($scope, $http, Config, overlay, ngDialog, $rootScope) ->
+MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', '$interval', ($scope, $http, Config, overlay, ngDialog, $rootScope, $interval) ->
 
 
-  testForB64 = (image) -> Config.base64Regex.test(image)
+  $interval ->
+    console.log "videoStream", $scope.videoAvailable, "imageAvailable", $scope.imageAvailable, $scope.videoAvailable || $scope.imageAvailable
+  , 1000
+
+  testForB64 = (image) ->
+    console.log "wat", $scope.imageSrc, Config.base64Regex.test(image)
+    Config.base64Regex.test(image)
 
   uploadToServer = (opts) ->
     httpConfig =
@@ -30,7 +36,7 @@ MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', ($
       data: { name: opts.name, email: opts.email }
     $http(httpConfig)
     .success (data, status, headers, config) ->
-      overlay.show('Email erfolgreich gesendet!')
+      overlay.show('Hochladen erfolgreich!')
       console.log "success", data
       $scope.uploadRequested = false
     .error (data, status, headers, config) ->
@@ -40,8 +46,10 @@ MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', ($
 
 
   $scope.imageSrc = Config.imageSrc
-  $scope.videoStream = '' #userMedia
-  $scope.imageAvailable = false #userMedia
+  $scope.userMedia =
+    videoAvailable: false
+    imageAvailable: false
+    videoBlob: null
   $scope.uploadRequested = false
   $scope.imageName = ''
   $scope.dialogModel =
@@ -51,20 +59,20 @@ MainCtrl = ['$scope', '$http', 'Config', 'overlay', 'ngDialog', '$rootScope', ($
     return unless testForB64($scope.imageSrc)
     uploadToServer({image: $scope.imageSrc, email: $scope.dialogModel.email})
 
-  $scope.onUploadClick = ->
-    return if $scope.uploadRequested
-    if (testForB64($scope.imageSrc))
-      dialogPromise = ngDialog.openConfirm
-        template: "html/email_modal.html"
-        scope: $scope
-      dialogPromise.then ->
-        sendToEmail({name: $scope.imageName, email: $scope.dialogModel.email})
-        $scope.dialogModel.email = ""
-    else
-      overlay.show({text: 'Kein Selfie gefunden! :(', type: 'error'})
+  $scope.onUploadClick = (ev) ->
+    return if $scope.uploadRequested || !testForB64($scope.imageSrc)
+    console.log "not b64"
+    dialogPromise = ngDialog.openConfirm
+      template: "html/email_modal.html"
+      scope: $scope
+    dialogPromise.then ->
+      sendToEmail({name: $scope.imageName, email: $scope.dialogModel.email})
+      $scope.dialogModel.email = ""
 
   $scope.onDestroyClick = ->
     $scope.imageSrc = Config.imageSrc
-    $scope.imageAvailable = false
+    $scope.userMedia.imageAvailable = false
+  $scope.testClick = ->
+    $scope.userMedia.imageAvailable = !$scope.userMedia.imageAvailable
 ]
 module.exports = MainCtrl

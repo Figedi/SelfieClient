@@ -11,23 +11,27 @@ head
     script(src='vendor/js/vendor.min.js')
     script(src='js/app.min.js')
   body(ng-app='selfieApp' ng-controller="MainCtrl")
-    .center
-      .image_wrapper(ng-hide='videoStream || imageAvailable')
-        span.selfie_img(picture-fill, camera, data-alt="Foobar")
-          span(pf-src="img/selfie_landscape.svg", data-media="(min-width: 645px)")
-          span(pf-src="img/selfie_portrait.svg", data-media="(max-width: 644px)")
+    ons-page
+      .ons-row(align="center")
+        .image_wrapper(ng-hide='userMedia.videoAvailable || userMedia.imageAvailable')
+          img.selfie_img(camera, data-alt="Selfie", ng-src="{{imageSrc}}")
+          img.selfie_img(camera, data-alt="Selfie", ons-if-orientation="landscape", src="img/selfie_portrait.svg")
           .description(ng-hide="uploadRequested")
             p Tippen, um neues Selfie aufzunehmen
-      img.selfie_img(ng-src="{{imageSrc}}", ng-show="imageAvailable")
-      video(ng-src='{{videoStream}}', ng-show='videoStream', width='320', height='279', usermedia, autoplay)
-    .center
-      button(ng-click="onDestroyClick()", ng-class="{ disabled: !imageAvailable || uploadRequested }")
-        i.fa.fa-times
-        span.button_addon Selfie löschen
-      button(ng-click="onUploadClick()", ng-class="{ disabled: !imageAvailable }", ng-hide="uploadRequested")
-        i.fa.fa-cloud-upload
-        span.button_addon Selfie Hochladen
-      button(ng-show="uploadRequested")
-        i.fa.fa-spinner.fa-spin
-        span.button_addon Hochladen...
-
+        img.selfie_img(ng-src="{{imageSrc}}", ng-show="userMedia.imageAvailable")
+        video(ng-src='{{userMedia.videoBlob}}', ng-show='userMedia.videoAvailable', width='320', height='279', usermedia, autoplay)
+      .ons-row(align="center")
+        br
+        ons-button(modifier="large", ng-click="onDestroyClick()", ng-class="{ disabled: !userMedia.imageAvailable || uploadRequested }")
+          i.fa.fa-times
+          span.button_addon Selfie löschen
+        br
+        ons-button(modifier="large", ng-click="onUploadClick($event)", ng-class="{ disabled: !userMedia.imageAvailable }", ng-hide="uploadRequested")
+          i.fa.fa-cloud-upload
+          span.button_addon Selfie Hochladen
+        ons-button(modifier="large", ng-show="uploadRequested")
+          i.fa.fa-spinner.fa-spin
+          span.button_addon Hochladen...
+        ons-button(modifier="large", ng-click="testClick()")
+          i.fa.fa-spinner.fa-spin
+          span.button_addon Titten

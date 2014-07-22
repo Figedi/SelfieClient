@@ -40,10 +40,10 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
   # first try to get usermedia picture
   onUsermediaSucc = (scope) ->
     (stream) ->
-      console.log "success"
       cameraData.videoStream = stream
       cameraData.videoBlob = URL.createObjectURL stream
-      scope.videoStream = URL.createObjectURL stream
+      scope.userMedia.videoBlob = URL.createObjectURL stream
+      scope.userMedia.videoAvailable = true
       scope.$apply()
       cameraData.videoRequested = false
 
@@ -62,7 +62,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
         else
           overlay.show({type: 'error', text: 'Kamerafehler!'})
         scope.imageSrc = Config.imageSrc
-        scope.imageAvailable = false
+        scope.userMedia.imageAvailable = false
         scope.$apply()
 
   getImageFromPhonegap = (scope) ->
@@ -73,7 +73,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
   onPhonegapSucc = (scope) ->
     (data) ->
       console.log "success phonegap"
-      scope.imageAvailable = true
+      scope.userMedia.imageAvailable = true
       scope.imageSrc = "data:image/png;base64,#{data}"
       scope.$apply()
       #cleanup cache
@@ -82,7 +82,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
   onPhonegapErr = (err) ->
     toast.show({type: 'error', text: 'Kamerafehler :('})
     scope.imageSrc = Config.imageSrc
-    scope.imageAvailable = false
+    scope.userMedia.imageAvailable = false
     scope.$apply()
 
   ##############################   Actual Directive   ############################
@@ -92,12 +92,12 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
       element.on 'click', ->
         return if cameraData.videoRequested
         return if scope.uploadRequested
-        scope.imageAvailable = false #deactivate buttons after subsequent calls
+        scope.userMedia.imageAvailable = false #deactivate buttons after subsequent calls
         #todo: größere standardgröße wählen
         if navigator.getUserMedia
           cameraData.videoRequested = true
           #find the visible image (automatically visible by usermedia)
-          getImageFromUserMedia(element.find('img'), scope)
+          getImageFromUserMedia(element, scope)
         else
           getImageFromPhonegap(scope)
 

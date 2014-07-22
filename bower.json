@@ -24,6 +24,16 @@
     "angular-touch": "~1.2.16",
     "angular-picturefill": "*",
     "fontawesome": "~4.1.0",
-    "ngDialog": "~0.2.2"
+    "ngDialog": "~0.2.2",
+    "OnsenUI": "henumohe/OnsenUI#master"
+  },
+  "overrides": {
+    "OnsenUI": {
+      "main": [
+        "build/js/onsenui.js",
+        "build/css/onsenui.css",
+        "build/css/onsen-css-components.css"
+      ]
+    }
   }
 }

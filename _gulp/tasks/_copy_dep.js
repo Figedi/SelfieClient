@@ -15,12 +15,12 @@ gulp.task('copy-dep', function() {
   var fontRegex = /\.(eot|svg|ttf|woff|otf)$/;
   return gulp.src(bower())
     .pipe(jsFilter)
-    .pipe(uglify())
+    .pipe(uglify({mangle: false, compress: false}))
     .pipe(concat('js/vendor.min.js'))
     .pipe(gulp.dest(DEST))
     .pipe(jsFilter.restore())
     .pipe(cssFilter)
-    .pipe(csso())
+    //.pipe(csso()) // deactivate csso for now, since onsen ui has a css bug in css components
     .pipe(concat('css/vendor.min.css'))
     .pipe(gulp.dest(DEST))
     .pipe(cssFilter.restore())
