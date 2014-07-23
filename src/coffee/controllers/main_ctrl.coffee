@@ -6,12 +6,10 @@ require('../factories/selfie_server')
 MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, overlay) ->
 
   testForB64 = (image) ->
-    console.log "image", image
     Config.base64Regex.test(image)
 
   uploadToServer = (opts) ->
     $scope.server.uploadRequested = true
-    console.log "upload"
     Server.upload(opts)
     .success (data, status, headers, config) ->
       overlay.show('Vielen Dank für dein Selfie!')
@@ -19,17 +17,14 @@ MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, ov
       $scope.server.uploadRequested = false
     .error (data, status, headers, config) ->
       overlay.show({text: 'Hochladen fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
-      console.log "error while uploading"
       $scope.server.fileName = ''
       $scope.server.uploadRequested = false
 
   sendToEmail = (opts) ->
     $scope.server.uploadRequested = true
-    console.log "email"
     Server.email(opts)
     .success (data, status, headers, config) ->
       overlay.show('Hochladen erfolgreich!')
-      console.log "success", data
       $scope.server.uploadRequested = false
       selfieNav.popPage()
       $scope.test.imageSrc = null #reset image
@@ -56,7 +51,6 @@ MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, ov
     uploadToServer({image: $scope.test.imageSrc, email: $scope.server.email})
 
   $scope.onUploadClick = (ev) ->
-    console.log "uploadreq", $scope.server.uploadRequested
     return if $scope.server.uploadRequested || !$scope.test.imageSrc
     selfieNav.pushPage("html/email_modal.html", { animation : 'slide' })
 
