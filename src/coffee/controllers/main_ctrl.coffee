@@ -56,11 +56,12 @@ MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, ov
     uploadToServer({image: $scope.test.imageSrc, email: $scope.server.email})
 
   $scope.onUploadClick = (ev) ->
-    return if $scope.uploadRequested || !$scope.test.imageSrc
+    console.log "uploadreq", $scope.server.uploadRequested
+    return if $scope.server.uploadRequested || !$scope.test.imageSrc
     selfieNav.pushPage("html/email_modal.html", { animation : 'slide' })
 
   $scope.onEmailClick = ->
-    console.log "it works"
+    return if $scope.server.uploadRequested
     #1. gucken ob gerade hochgeladne wird, wenn ja: button locken
     #2. wenn nicht hochgeladen dann datei mitshcicken
     if $scope.server.fileName

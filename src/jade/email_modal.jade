@@ -5,13 +5,16 @@ ons-page
     br
     form(name="dialogForm", novalidate)
       label Bitte Email angeben (optional)
-      input(type="email", ng-model="dialogModel.email", placeholder="Email-Adresse (optional)", ng-pattern="/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/")
+      input(type="email", ng-model="server.email", placeholder="Email-Adresse (optional)", ng-pattern="/[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}/")
       br
-      ons-button(modifier="large", type="submit", ng-class="{disabled: server.uploadRequested || dialogForm.$invalid }", ng-click="dialogForm.$valid && onEmailClick()")
-        ons-icon(icon="cloud-upload")
-        span(ng-show="server.uploadRequested") Warte auf Upload-Ende
-        span(ng-hide="server.uploadRequested") Uploaden!
+      ons-button(modifier="large", type="submit", ng-class="{disabled: dialogForm.$invalid }", ng-click="dialogForm.$valid && onEmailClick()")
+        div(ng-if="server.uploadRequested")
+          ons-icon(icon="spinner", spin="true")
+          | Hochladen...
+        div(ng-if="!server.uploadRequested")
+          ons-icon(icon="cloud-upload")
+          | Uploaden!
       br
-      ons-button(modifier="large", ng-click="selfieNav.popPage()")
+      ons-button(modifier="large", ng-class="{disabled: server.uploadRequested }", ng-click="!server.uploadRequested && selfieNav.popPage()")
         ons-icon(icon="times")
         | Abbrechen
