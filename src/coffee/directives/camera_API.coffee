@@ -61,7 +61,7 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
           overlay.show({type: 'error', text: 'Keine Kamera verfügbar'})
         else
           overlay.show({type: 'error', text: 'Kamerafehler!'})
-        scope.imageSrc = null
+        scope.test.imageSrc = null
         scope.userMedia.imageAvailable = false
         scope.$apply()
 
@@ -74,14 +74,14 @@ camera = ['cordovaReady', 'Config', 'cameraData', 'overlay', (cordovaReady, Conf
     (data) ->
       console.log "success phonegap"
       scope.userMedia.imageAvailable = true
-      scope.imageSrc = "data:image/png;base64,#{data}"
+      scope.test.imageSrc = "data:image/png;base64,#{data}"
       scope.$apply()
       #cleanup cache
       cordovaReady.ready().then -> navigator.camera.cleanup((->), (->))
   #if phonegap failed again, fallback to default image (or again broken icon)
   onPhonegapErr = (err) ->
     toast.show({type: 'error', text: 'Kamerafehler :('})
-    scope.imageSrc = null
+    scope.test.imageSrc = null
     scope.userMedia.imageAvailable = false
     scope.$apply()
 
