@@ -29,5 +29,7 @@ data.phonegap.defaultOptions =
   encodingType: data.phonegap.CameraDefaults.EncodingType.PNG
   cameraDirection: data.phonegap.CameraDefaults.Direction.FRONT
   correctOrientation: true
+  targetWidth: 500
+  targetHeight: 500
 
 module.exports = data
