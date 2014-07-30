@@ -23,13 +23,12 @@ data =
         FRONT: 1
 
 data.phonegap.defaultOptions =
-  quality: 50
+  quality: 80
   destinationType: data.phonegap.CameraDefaults.DestinationType.DATA_URL
   sourceType: data.phonegap.CameraDefaults.PictureSourceType.CAMERA
   encodingType: data.phonegap.CameraDefaults.EncodingType.PNG
   cameraDirection: data.phonegap.CameraDefaults.Direction.FRONT
   correctOrientation: true
   targetWidth: 500
-  targetHeight: 500
 
 module.exports = data

@@ -15,8 +15,13 @@ overlay = [ '$timeout', '$rootScope',  '$rootElement', '$compile','$window', ($t
     if t = document.querySelector('.toast')
       t.remove()
     #add animation class and append to DOM
-    element.addClass('toast-show')
     $rootElement.append(element)
+    domElement = document.querySelector('.toast')
+    #center element vertically
+    margin = domElement.offsetHeight / 2
+    domElement.style["margin-top"] = "-#{margin}px"
+    #add show class (fade-in animation)
+    element.addClass('toast-show')
     #cancel timeout promise if element existed
     $timeout.cancel(timeoutPromise) if timeoutPromise
     #create timeoutPromise, removing the element with animation

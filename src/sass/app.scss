@@ -27,7 +27,6 @@ body {
   left: 50%;
   width: 200px;
   height: auto;
-  padding-bottom: 20px;
   margin-left: -100px;
   margin-top: -100px;
   background: rgba(0, 0, 0, 0.8);
@@ -39,14 +38,15 @@ body {
     text-align: center;
   }
   span {
+    position: relative;
     color: white;
     font-weight: bold;
     text-align: center;
     display: block;
     font-size: 22px;
-    bottom: 20px;
-    left: 0;
     width: 100%;
+    word-break: break-all;
+    padding: 5px 10px 10px 10px;
   }
 }
 label {
