@@ -13,7 +13,7 @@ ons-page
           | Hochladen...
         div(ng-if="!server.uploadRequested")
           ons-icon(icon="cloud-upload")
-          | Uploaden!
+          | Hochladen!
       br
       ons-button(modifier="large", ng-class="{disabled: server.uploadRequested }", ng-click="!server.uploadRequested && selfieNav.popPage()")
         ons-icon(icon="times")
