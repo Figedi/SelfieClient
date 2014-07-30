@@ -1,14 +1,12 @@
 require('../config/static')
 
 selfieServer = ['$http', 'Config', ($http, Config) ->
-
   {
     upload: (opts) ->
       httpConfig =
         method: 'POST'
-        timeout: 5000 #30seconds
         url: "#{Config.serverIP}/upload"
-        data: { b64: opts.image, email: opts.email }
+        data: { b64: opts.image }
       $http(httpConfig)
     email: (opts) ->
       httpConfig =
@@ -17,8 +15,5 @@ selfieServer = ['$http', 'Config', ($http, Config) ->
         data: { name: opts.name, email: opts.email }
       $http(httpConfig)
   }
-
-
-
 ]
 module.exports = selfieServer

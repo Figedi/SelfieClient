@@ -16,7 +16,7 @@ MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, ov
       $scope.server.fileName = data.file.name
       $scope.server.uploadRequested = false
     .error (data, status, headers, config) ->
-      overlay.show({text: 'Hochladen fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
+      overlay.show({text: 'Speichern fehlgeschlagen, versuch\'s doch nochmal!', type: 'error'})
       $scope.server.fileName = ''
       $scope.server.uploadRequested = false
 
@@ -48,7 +48,7 @@ MainCtrl = ['$scope', 'Server', 'Config', 'overlay', ($scope, Server, Config, ov
 
   $scope.$watch 'test.imageSrc', ->
     return unless $scope.test.imageSrc
-    uploadToServer({image: $scope.test.imageSrc, email: $scope.server.email})
+    uploadToServer({image: $scope.test.imageSrc})
 
   $scope.onUploadClick = (ev) ->
     return if $scope.server.uploadRequested || !$scope.test.imageSrc
