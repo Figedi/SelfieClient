@@ -11,26 +11,28 @@ For Installation, you need the following:
   * Cordova ~> 3.5.0
   * Working ADT/iOS environment
   * node ~> 0.10 + npm
-  * compass gem (`gem install compass`)
   * gulp, coffeeify, browserify (`npm i -g gulp coffeeify browserify)
   * Third-party libraries for dev/client, run from project root directory:
     * `bower install`
     * `npm install`
+  * Build sourcefiles from scratch: `gulp build` 
 
 Usage
 -----
-This project utilizes a gulp workflow, for starters in devmode, use `gulp` from Command-Line for a live-reload) server, compass, coffee, jade build process. (Livereload plugin required)
+This project utilizes a gulp workflow, for starters in devmode, use `gulp` from Command-Line for a browser-sync server, sass, coffee, jade build process.
 
 
 Building
 -----
 
-Currently two plattforms are installed: Android and iOS. For other platforms, follow the plattform guide of phonegap.
-All src/ files are copied to www during the `gulp build` task, so a phonegap build always gets the latest source files. For plattform building/debugging on devices, you can either use:
-  * Phonegap Development App with live-refresh (i.e. `phonegap serve`)
-  * Android USB Debugging/iOS USB Installation
+This project is just the HTML-Base for the App. For Platform specific builds, refer to the repositories containing this repo as a submodule. Currently there are two builds: IOS and Android.
+For Local Testing, we are using browser-sync:
+  * Cordova Development App with live-refresh (i.e. `gulp`, then follow instructions of browser-sync)
 
-Please refer to the phonegap docs for further building instructions, this is pretty straight forward (i.e. `phonegap build android` and `phonegap run android`)
+Android-Repository: https://github.com/Figedi/SelfieClient-Android
+IOS-Repository: https://github.com/Figedi/SelfieClient-IOS
+
+Please refer to the cordova docs for further building instructions, this is pretty straight forward (i.e. `cordova build android` and `cordova run android`)
 
 Contribute
 ----
