@@ -12,7 +12,7 @@ selfieServer = ['$http', 'Config', ($http, Config) ->
       httpConfig =
         method: 'POST'
         url: "#{Config.serverIP}/email"
-        data: { name: opts.name, email: opts.email }
+        data: opts
       $http(httpConfig)
   }
 ]
